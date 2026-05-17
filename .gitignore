@@ -1,0 +1,17 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.swp
+
+# Frontend
+node_modules/
+dist/
+.env
+*.local
+
+# OS
+.DS_Store
+Thumbs.db
