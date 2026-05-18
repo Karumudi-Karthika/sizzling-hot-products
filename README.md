@@ -24,7 +24,7 @@ Displays the **top-selling product per day** and **top product over the past 3 d
 
 | Layer    | Technology                   | Why                                                                  |
 |----------|------------------------------|----------------------------------------------------------------------|
-| Backend  | .NET 8 / ASP.NET Core Web API | Matches the role's primary stack; strongly typed, fast, well-suited to REST APIs |
+| Backend  | .NET 10 / ASP.NET Core Web API | Matches the role's primary stack; strongly typed, fast, well-suited to REST APIs |
 | Frontend | React 18 + TypeScript + Vite  | Matches the role's primary stack; Vite gives fast HMR in dev         |
 | Data     | JSON files (from inputs/)     | Per brief requirements; loaded once and cached in memory             |
 | Testing  | xUnit + FluentAssertions (.NET), Vitest + Testing Library (React) | Industry-standard pairing for each platform |
@@ -84,7 +84,7 @@ sizzling-hot-products/
 
 ### Prerequisites
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [.NET 8+ SDK](https://dotnet.microsoft.com/download)
 - [Node.js 18+](https://nodejs.org/)
 
 ### 1. Clone your repo
