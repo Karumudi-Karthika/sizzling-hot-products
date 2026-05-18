@@ -1,5 +1,24 @@
 import axios from 'axios';
-import { SizzlingHotProductsResponse } from '../types';
+
+export interface DailySizzlingResult {
+  date: string;
+  productId: string;
+  productName: string;
+  saleCount: number;
+}
+
+export interface PeriodSizzlingResult {
+  periodStart: string;
+  periodEnd: string;
+  productId: string;
+  productName: string;
+  saleCount: number;
+}
+
+export interface SizzlingHotProductsResponse {
+  dailyResults: DailySizzlingResult[];
+  threeDayResult: PeriodSizzlingResult;
+}
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5000';
 
@@ -8,17 +27,8 @@ const client = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-/**
- * Fetches sizzling hot product results from the backend.
- * @param today Optional date override in dd/MM/yyyy format.
- */
-export async function fetchSizzlingHotProducts(
-  today?: string
-): Promise<SizzlingHotProductsResponse> {
+export async function fetchSizzlingHotProducts(today?: string): Promise<SizzlingHotProductsResponse> {
   const params = today ? { today } : {};
-  const { data } = await client.get<SizzlingHotProductsResponse>(
-    '/api/products/sizzling-hot',
-    { params }
-  );
+  const { data } = await client.get<SizzlingHotProductsResponse>('/api/products/sizzling-hot', { params });
   return data;
 }

@@ -1,24 +1,22 @@
 import { useState } from 'react';
-import { useSizzlingHotProducts } from '../hooks/useSizzlingHotProducts';
+import { useQuery } from '@tanstack/react-query';
+import { fetchSizzlingHotProducts } from '../api/productsApi';
 import { DailyResultCard } from './DailyResultCard';
 import { PeriodWinnerBanner } from './PeriodWinnerBanner';
 import { LoadingSkeleton } from './LoadingSkeleton';
 import { ErrorMessage } from './ErrorMessage';
 import styles from './SizzlingDashboard.module.css';
 
-/**
- * Top-level dashboard page.
- * Renders the 3-day sizzling hot products view:
- *  - Overall period winner (banner)
- *  - Daily breakdown (cards)
- * Supports an optional date override for testing/demo purposes.
- */
 export function SizzlingDashboard() {
-  // Allow the user to override "today" for demo/testing
   const [dateOverride, setDateOverride] = useState('');
   const [appliedDate, setAppliedDate] = useState<string | undefined>(undefined);
 
-  const { data, isLoading, isError, error, refetch } = useSizzlingHotProducts(appliedDate);
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ['sizzling-hot-products', appliedDate],
+    queryFn: () => fetchSizzlingHotProducts(appliedDate),
+    staleTime: 60_000,
+    retry: 2,
+  });
 
   const handleApplyDate = () => {
     const trimmed = dateOverride.trim();
@@ -30,8 +28,7 @@ export function SizzlingDashboard() {
     setAppliedDate(undefined);
   };
 
-  const errorMessage =
-    error instanceof Error ? error.message : 'Failed to load sizzling hot products.';
+  const errorMessage = error instanceof Error ? error.message : 'Failed to load sizzling hot products.';
 
   return (
     <div className={styles.page}>
@@ -46,7 +43,6 @@ export function SizzlingDashboard() {
       </header>
 
       <main className={styles.main}>
-        {/* Date override control */}
         <section className={styles.controls} aria-label="Date controls">
           <label htmlFor="date-input" className={styles.controlLabel}>
             Override "today" (dd/MM/yyyy):
@@ -61,35 +57,22 @@ export function SizzlingDashboard() {
               onChange={(e) => setDateOverride(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleApplyDate()}
             />
-            <button className={styles.btnPrimary} onClick={handleApplyDate}>
-              Apply
-            </button>
+            <button className={styles.btnPrimary} onClick={handleApplyDate}>Apply</button>
             {appliedDate && (
-              <button className={styles.btnSecondary} onClick={handleReset}>
-                Reset
-              </button>
+              <button className={styles.btnSecondary} onClick={handleReset}>Reset</button>
             )}
           </div>
           {appliedDate && (
-            <p className={styles.controlNote}>
-              Showing results as of: <strong>{appliedDate}</strong>
-            </p>
+            <p className={styles.controlNote}>Showing results as of: <strong>{appliedDate}</strong></p>
           )}
         </section>
 
-        {/* Content */}
         {isLoading && <LoadingSkeleton />}
-
-        {isError && (
-          <ErrorMessage message={errorMessage} onRetry={() => refetch()} />
-        )}
+        {isError && <ErrorMessage message={errorMessage} onRetry={() => refetch()} />}
 
         {data && (
           <>
-            {data.threeDayResult?.productName ? (
-              <PeriodWinnerBanner result={data.threeDayResult} />
-            ) : null}
-
+            {data.threeDayResult?.productName && <PeriodWinnerBanner result={data.threeDayResult} />}
             <section aria-label="Daily results">
               <h2 className={styles.sectionTitle}>Daily Breakdown</h2>
               {data.dailyResults.length === 0 ? (

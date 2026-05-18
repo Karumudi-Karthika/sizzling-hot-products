@@ -1,14 +1,17 @@
-import { DailySizzlingResult } from '../types';
 import styles from './DailyResultCard.module.css';
+
+interface DailySizzlingResult {
+  date: string;
+  productId: string;
+  productName: string;
+  saleCount: number;
+}
 
 interface Props {
   result: DailySizzlingResult;
   rank: number;
 }
 
-/**
- * Displays the top sizzling product for a single day.
- */
 export function DailyResultCard({ result, rank }: Props) {
   return (
     <article className={styles.card} aria-label={`Result for ${result.date}`}>

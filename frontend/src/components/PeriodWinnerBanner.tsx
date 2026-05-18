@@ -1,13 +1,17 @@
-import { PeriodSizzlingResult } from '../types';
 import styles from './PeriodWinnerBanner.module.css';
+
+interface PeriodSizzlingResult {
+  periodStart: string;
+  periodEnd: string;
+  productId: string;
+  productName: string;
+  saleCount: number;
+}
 
 interface Props {
   result: PeriodSizzlingResult;
 }
 
-/**
- * Prominently displays the overall top sizzling product for the 3-day window.
- */
 export function PeriodWinnerBanner({ result }: Props) {
   return (
     <section className={styles.banner} aria-label="3-day period winner">

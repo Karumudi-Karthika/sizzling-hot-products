@@ -1,19 +1,19 @@
-export interface DailySizzlingResult {
+export type DailySizzlingResult = {
   date: string;
   productId: string;
   productName: string;
   saleCount: number;
-}
+};
 
-export interface PeriodSizzlingResult {
+export type PeriodSizzlingResult = {
   periodStart: string;
   periodEnd: string;
   productId: string;
   productName: string;
   saleCount: number;
-}
+};
 
-export interface SizzlingHotProductsResponse {
+export type SizzlingHotProductsResponse = {
   dailyResults: DailySizzlingResult[];
   threeDayResult: PeriodSizzlingResult;
-}
+};
