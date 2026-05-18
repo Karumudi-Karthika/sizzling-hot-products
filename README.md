@@ -90,7 +90,7 @@ sizzling-hot-products/
 ### 1. Clone your repo
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Karumudi-Karthika/sizzling-hot-products.git
 cd sizzling-hot-products
 ```
 
